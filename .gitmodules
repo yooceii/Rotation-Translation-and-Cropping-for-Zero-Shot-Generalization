@@ -1,3 +1,6 @@
 [submodule "GVGAI_GYM"]
 	path = GVGAI_GYM
 	url = https://github.com/rubenrtorrado/GVGAI_GYM.git
+[submodule "baselines"]
+	path = baselines
+	url = https://github.com/openai/baselines.git
