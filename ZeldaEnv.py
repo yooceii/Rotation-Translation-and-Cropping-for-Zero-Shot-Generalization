@@ -9,6 +9,7 @@ ac = ["ACTION_NIL",
       "ACTION_DOWN",
       "ACTION_UP"]
 direction = {2:3, 3:1, 4:2, 5:0}
+direction_list = [5, 2, 4, 3]
 
 class ZeldaEnv(gym.Wrapper):
     def __init__(self, env, crop=False, rotate=False, shape=(84,84)):
@@ -27,7 +28,10 @@ class ZeldaEnv(gym.Wrapper):
         # self.env.observation_space.shape = self.env.observation_space.shape[:-1] + (3,)
 
     def step(self, action):
+        # restore actually action when performing rotate
         if action != 0 and action != 1:
+            if self.rotate:
+                action = direction_list[(direction_list.index(action)+4-direction.get(self.direction))%4]
             self.direction = action
         obs, reward, done, info = self.env.step(action)
         if done:
@@ -52,6 +56,7 @@ class ZeldaEnv(gym.Wrapper):
         return self.unwrappered.get_action_meanings()
 
     def reset(self):
+        env.unwrapped._setLevel(np.random.randint(0,5))
         obs = self.env.reset()
         if self.rotate:
             obs = np.rot90(obs, k=direction.get(self.direction))
@@ -91,6 +96,7 @@ def crop(image, mask, ascii, u, d, l, r, pixel):
 
 def mask(image, info, k=0, pixel=10, rotate=True):
     mask = 's,s,s,s,s\nb,s,s,s,b\nb,s,a,s,b\nb,b,s,b,b'
+    # mask = 's,s,s,s,s,s,s\nb,s,s,s,s,s,b\nb,b,s,s,s,b,b\nb,b,s,a,s,b,b\nb,b,b,s,b,b,b'
     mask_list = np.array([l.split(",") for l in mask.split("\n")])
     mask_pos = np.asarray(np.where(mask_list=='a')).T[0]
     ascii = np.rot90([l.split(",") for l in info["ascii"].split("\n")], k=k)

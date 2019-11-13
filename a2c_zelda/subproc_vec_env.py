@@ -9,7 +9,6 @@ def worker(remote, parent_remote, env_fn_wrappers):
     def step_env(env, action):
         ob, reward, done, info = env.step(action)
         if done:
-            env.unwrapped._setLevel(np.random.randint(0,5))
             ob = env.reset()
         return ob, reward, done, info
 
@@ -21,12 +20,7 @@ def worker(remote, parent_remote, env_fn_wrappers):
             if cmd == 'step':
                 remote.send([step_env(env, action) for env, action in zip(envs, data)])
             elif cmd == 'reset':
-                obs = []
-                for env in envs:
-                    env.unwrapped._setLevel(np.random.randint(0,5))
-                    obs += [env.reset()]
-                remote.send(obs)
-                # remote.send([env.reset() for env in envs])
+                remote.send([env.reset() for env in envs])
             elif cmd == 'render':
                 remote.send([env.render(mode='rgb_array') for env in envs])
             elif cmd == 'close':
