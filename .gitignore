@@ -3,3 +3,6 @@ models
 *.swp
 *.swo
 *.ipynb
+__pycache__
+.vscode
+*.pyc
