@@ -274,11 +274,9 @@ def make_atari(env_id, max_episode_steps=None):
 
 def make_gvgai(env_id, max_episode_steps=None):
     env = gym.make(env_id)
+    env = TimeLimit(env, max_episode_steps=1000)
     # env = NoopResetEnv(env, noop_max=30)
     # env = MaxAndSkipEnv(env, skip=4)
-    if max_episode_steps is not None:
-        print("time limit")
-        env = TimeLimit(env, max_episode_steps=max_episode_steps)
     return env
     
 

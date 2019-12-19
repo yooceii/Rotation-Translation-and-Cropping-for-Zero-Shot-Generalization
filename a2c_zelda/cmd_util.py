@@ -78,7 +78,8 @@ def make_env(env_id, mpi_rank=0, subrank=0, seed=None, reward_scale=1.0, gamesta
     env = Monitor(env,
                   logger_dir and os.path.join(logger_dir, str(mpi_rank) + '.' + str(subrank)),
                   allow_early_resets=True)
-    env = ZeldaEnv(env, wrapper_kwargs.pop("crop", False), wrapper_kwargs.pop("rotate", False))
+    env = ZeldaEnv(env, wrapper_kwargs.pop("crop", False), wrapper_kwargs.pop("rotate", False), wrapper_kwargs.pop("full", False), wrapper_kwargs.pop("repava", False))
+    print(env.observation_space)
     env = wrap_deepmind(env, **wrapper_kwargs)
 
     if isinstance(env.action_space, gym.spaces.Box):

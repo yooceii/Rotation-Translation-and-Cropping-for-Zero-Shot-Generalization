@@ -195,6 +195,7 @@ def learn(
     model = Model(policy=policy, env=env, nsteps=nsteps, ent_coef=ent_coef, vf_coef=vf_coef,
         max_grad_norm=max_grad_norm, lr=lr, alpha=alpha, epsilon=epsilon, total_timesteps=total_timesteps, lrschedule=lrschedule)
     if load_path is not None:
+        print("Loading model from {}".format(load_path))
         model.load(load_path)
 
     # Instantiate the runner object

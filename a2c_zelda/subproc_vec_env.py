@@ -26,6 +26,9 @@ def worker(remote, parent_remote, env_fn_wrappers):
             elif cmd == 'close':
                 remote.close()
                 break
+            elif cmd == 'set_level':
+                for env in envs:
+                    env.unwrapped._setLevel(data)
             elif cmd == 'get_spaces_spec':
                 remote.send((envs[0].observation_space, envs[0].action_space, envs[0].spec))
             else:
@@ -105,6 +108,11 @@ class SubprocVecEnv(VecEnv):
             remote.send(('close', None))
         for p in self.ps:
             p.join()
+
+    def set_level(self, level):
+        self._assert_not_closed()
+        for pipe in self.remotes:
+            pipe.send(('set_level', level))
 
     def get_images(self):
         self._assert_not_closed()
