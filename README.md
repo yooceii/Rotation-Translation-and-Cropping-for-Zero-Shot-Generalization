@@ -3,4 +3,4 @@
 
 New York University <br/>
 
-This the implementatino for our paper [Rotation, Translation, and Cropping for Zero-Shot Generalization](https://ieee-cog.org/2020/papers/paper_35.pdf)
+The implementation for paper [Rotation, Translation, and Cropping for Zero-Shot Generalization](https://ieee-cog.org/2020/papers/paper_35.pdf)
